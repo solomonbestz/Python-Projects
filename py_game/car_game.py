@@ -15,6 +15,17 @@ def draw_rect(display, color, rectangle):
         rectangle #rectangle
     )
 
+# FUnction to draw image 
+def load_image(screen, file_path, img_size, rect_center):
+    image = pygame.image.load(file_path)
+    image = pygame.transform.scale(image, (img_size))
+
+    image_location = image.get_rect()
+    image_location.center = rect_center
+    screen.blit(image, image_location)
+    pygame.display.update()
+
+
 
 
 pygame.init()
@@ -32,10 +43,11 @@ draw_rect(screen, (255, 255, 0 ), (width - road_w/5 + road_strip / 7, 0, road_st
 
 pygame.display.update() #Apply changes
 
-
 while running:
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False
 
+    load_image(screen, "py_game/player_car.png", (150, 150), (width/2 - road_w/4, height * 0.88) )
+    
 pygame.quit()
