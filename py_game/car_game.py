@@ -5,6 +5,7 @@ import random
 SIZE = width, height = (600, 600) #Relative screen size
 road_w = int(width/ 1.3) # Road width
 road_strip = int(width/15) # Road strip width
+ENEMY_SPEED = 1
 
 RIGHT_LANE = width/2 + road_w/4
 LEFT_LANE = width/2 - road_w/4
@@ -41,7 +42,7 @@ def display_road():
 # Enemy movement function
 def enemy_movement(enemy_loc):
     # Animate enemy vehicle
-    enemy_loc[1] += 1
+    enemy_loc[1] += ENEMY_SPEED
     if enemy_loc[1] > height:
         enemy_loc[1] = -200
         if random.randint(0, 1) == 0:
@@ -54,9 +55,13 @@ def end_game(player_loc, enemy_loc):
         print("Game Over!!")
         exit()
 
-# if (enemy[1][1] == 453 and  player[1][1] == 453) or (enemy[1][0] == 453 and  player[1][0] == 453) :
-#         print("Game Over!!")
-#         break
+def level_up(counter):
+    global ENEMY_SPEED
+    if counter == 5000:
+        ENEMY_SPEED += 0.15
+        counter = 0
+        print("Level Up", ENEMY_SPEED)
+    return counter
 
 
     
@@ -74,9 +79,13 @@ screen.fill((90, 90, 90)) #Game background color
 player = load_image("py_game/player_car.png", (150, 150), (LEFT_LANE, height * 0.88))
 enemy = load_image("py_game/enemy_car.png", (100, 130), (RIGHT_LANE - 1, height * 0.1))
 
+counter = 0
 
 while running:
+    counter += 1
     enemy_movement(enemy[1])
+    count = level_up(counter)
+    counter = count
     end_game(player[1], enemy[1])
     # EVent Listener
     for event in pygame.event.get():
