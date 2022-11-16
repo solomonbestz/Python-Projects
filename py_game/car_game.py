@@ -47,6 +47,7 @@ def enemy_movement(enemy_loc):
         enemy_loc[1] = -200
         if random.randint(0, 1) == 0:
             enemy_loc.center = RIGHT_LANE -1, -200 
+            sound1[0].play()
         else:
             enemy_loc.center = LEFT_LANE, -200
 
@@ -63,10 +64,17 @@ def level_up(counter):
         print("Level Up", ENEMY_SPEED)
     return counter
 
+def sounds():
+    car_sound1 = pygame.mixer.Sound("py_game/car_sound.mp3")
+    return [car_sound1]
+
 
     
 
 pygame.init()
+pygame.mixer.init()
+
+
 running = True
 screen = pygame.display.set_mode(SIZE) #Initializing the screen 
 pygame.display.set_caption("Bestz Race") #Game title 
@@ -79,7 +87,9 @@ screen.fill((90, 90, 90)) #Game background color
 player = load_image("py_game/player_car.png", (150, 150), (LEFT_LANE, height * 0.88))
 enemy = load_image("py_game/enemy_car.png", (100, 130), (RIGHT_LANE - 1, height * 0.1))
 
+
 counter = 0
+sound1 = sounds()
 
 while running:
     counter += 1
