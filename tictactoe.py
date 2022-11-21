@@ -1,40 +1,77 @@
-import random
+import os, random, time
 
-GAME = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-PLAYER__OPTION = []
-AI_OPTION = []
+DISPLAY_BOARD = ['?'] * 9
+GAME_PLAYED = [] * 9
+USER_PLAY = []
+COMPUTER_PLAY = []
+COMPUTER_PICK = ""
+PLAYER_PICK = ""
 
-
-# [0, 1, 2]
-# [3, 4, 5]
-# [6, 7, 8]
-
-def display_board():
+def display_doard():
     print(f"""
-       
-       __{GAME[0]}__|__{GAME[1]}__|__{GAME[2]}__
 
-       __{GAME[3]}__|__{GAME[4]}__|__{GAME[5]}__
-
-       __{GAME[4]}__|__{GAME[7]}__|__{GAME[8]}__
-
+        |__{DISPLAY_BOARD[0]}__|__{DISPLAY_BOARD[1]}__|__{DISPLAY_BOARD[2]}__|
+        |__{DISPLAY_BOARD[3]}__|__{DISPLAY_BOARD[4]}__|__{DISPLAY_BOARD[5]}__|
+        |__{DISPLAY_BOARD[6]}__|__{DISPLAY_BOARD[7]}__|__{DISPLAY_BOARD[8]}__|
+    
     """)
-    pass
+
+def computer_play(xorochoose):
+    return [random.randint(0, len(GAME_PLAYED)), xorochoose]
+
+def player_play(xorochoose):
+    return [int(input("Enter Position: ")), xorochoose]
+
+# Function for user to choose either x or o
+def check_X_Or_O():
+    global COMPUTER_PICK, PLAYER_PICK
+    PLAYER_PICK =  input("Choose X or O: ").lower()
+    
+    if PLAYER_PICK == 'x':
+        COMPUTER_PICK = "o"
+    elif PLAYER_PICK == "o":
+        COMPUTER_PICK = "x"
+    else:
+        print("Wrong >>> Choose either x or o")
+        check_X_Or_O()
+
+# Function for computer to play
+def computer_turn():
+    comp = computer_play(COMPUTER_PICK)
+    insert_in_list(comp[0], comp[1])
+
+def player_turn():
+    player = player_play(PLAYER_PICK)
+    insert_in_list(player[0], player[1])
+
+# Function to insert computer play into the display board
+def insert_in_list(index, char):
+    replace(DISPLAY_BOARD, index, char)
 
 
-def player_input():
-    ask = input("Choose x or o") 
-
-def score_board():
-    pass
-
-def play_again():
-    pass
-
-def game_menu():
-    display_board()
+def menu():
+    player_turn() #Computer chooses position to play
+    display_doard()
+    time.sleep(3) # Game waits for 3seconds to continue
+    computer_turn() #Computer chooses position to play randomly
+    display_doard()
 
 
-if __name__=='__main__':
-    game_menu()
+def replace(arr, index, char):
+    for n in range(len(arr)):
+        if n == index:
+            arr[n] = char
+    return arr
+
+if __name__=="__main__":
+    # os.system("color 1f")
+    display_doard()
+
+    check_X_Or_O() #Player chooses either X or O
+    while True:
+        menu()
+        
+        
+
+
 
