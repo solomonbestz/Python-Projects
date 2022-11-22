@@ -1,7 +1,7 @@
 import os, random, time
 
 DISPLAY_BOARD = ['?'] * 9
-GAME_PLAYED = () * 9
+GAME_PLAYED = [] 
 USER_PLAY = []
 COMPUTER_PLAY = []
 COMPUTER_PICK = ""
@@ -17,7 +17,8 @@ def display_doard():
     """)
 
 def computer_play(xorochoose):
-    return [random.randint(0, len(GAME_PLAYED)), xorochoose]
+    return [random.randint(1, 9), xorochoose]
+
 
 def player_play(xorochoose):
     return [int(input("Enter Position: ")), xorochoose]
@@ -37,27 +38,29 @@ def check_X_Or_O():
 
 # Function for computer to play
 def computer_turn():
+    global GAME_PLAYED, COMPUTER_PICK
     comp = computer_play(COMPUTER_PICK)
-    insert_in_list(comp[0], comp[1])
-    
-    
+    print(comp[0])
+    print(GAME_PLAYED)
+    for n in range(len(GAME_PLAYED)):
+        if GAME_PLAYED[n] == comp[0]:
+            print(f"came here and {comp[0]}")
+            computer_turn()
+        else:
+            insert_in_list(comp[0], comp[1])
+            GAME_PLAYED.append(comp[0])
+
+
+# Function for player to play 
 def player_turn():
     player = player_play(PLAYER_PICK)
     insert_in_list(player[0], player[1])
+    GAME_PLAYED.append(player[0])
     
     
 # Function to insert choosen x or o play into the display board
 def insert_in_list(index, char):
     replace(DISPLAY_BOARD, index, char)
-
-
-def check_list(list, index, player):
-    if index in list and player == "computer":
-        print(f"{index} has been picked")
-        computer_turn()
-    if index in list and player == "user":
-        print(f"{index} has been picked")
-        player_turn()
 
 
 def menu():
