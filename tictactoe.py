@@ -17,7 +17,7 @@ def display_doard():
     """)
 
 def computer_play(xorochoose):
-    return [random.randint(1, 9), xorochoose]
+    return [random.randint(0, 8), xorochoose]
 
 
 def player_play(xorochoose):
@@ -42,13 +42,13 @@ def computer_turn():
     comp = computer_play(COMPUTER_PICK)
     print(comp[0])
     print(GAME_PLAYED)
-    for n in range(len(GAME_PLAYED)):
-        if GAME_PLAYED[n] == comp[0]:
-            print(f"came here and {comp[0]}")
-            computer_turn()
-        else:
-            insert_in_list(comp[0], comp[1])
-            GAME_PLAYED.append(comp[0])
+
+    if comp[0] in GAME_PLAYED:
+        print(f"came here with {comp[0]}")
+        computer_turn()
+    else:
+        insert_in_list(comp[0], comp[1])
+        GAME_PLAYED.append(comp[0])
 
 
 # Function for player to play 
