@@ -2,11 +2,17 @@ import os, random, time
 
 DISPLAY_BOARD = ['?'] * 9
 GAME_PLAYED = [] 
-USER_PLAY = []
+USER_PLAY = [2, 1, 4]
 COMPUTER_PLAY = []
+CHECK_WIN = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
 COMPUTER_PICK = ""
 PLAYER_PICK = ""
 
+'''
+0 1 2
+3 4 5
+6 7 8
+'''
 def display_doard():
     print(f"""
 
@@ -70,6 +76,20 @@ def menu():
     computer_turn() #Computer chooses position to play randomly
     display_doard()
 
+def check_win():
+    true_win = []
+    count = 0
+    index = 0
+    while count < len(CHECK_WIN):
+        if USER_PLAY[index] in CHECK_WIN[count]:
+            true_win.append(True)
+            if index == 2:
+                break
+        else:
+            true_win.clear()
+            count += 1
+            index = 0
+        index += 1
 
 def replace(arr, index, char):
     for n in range(len(arr)):
@@ -79,6 +99,7 @@ def replace(arr, index, char):
 
 if __name__=="__main__":
     # os.system("color 1f")
+    check_win()
     display_doard()
 
     check_X_Or_O() #Player chooses either X or O
