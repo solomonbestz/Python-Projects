@@ -76,12 +76,12 @@ def menu():
     computer_turn() #Computer chooses position to play randomly
     display_doard()
 
-def check_win():
+def check_win(game_lis):
     true_win = []
     count = 0
     index = 0
     while count < len(CHECK_WIN):
-        if USER_PLAY[index] in CHECK_WIN[count]:
+        if game_lis[index] in CHECK_WIN[count]:
             true_win.append(True)
             if index == 2:
                 break
