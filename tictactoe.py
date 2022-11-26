@@ -2,7 +2,7 @@ import os, random, time
 
 DISPLAY_BOARD = ['?'] * 9
 GAME_PLAYED = [] 
-USER_PLAY = [2, 1, 4]
+USER_PLAY = []
 COMPUTER_PLAY = []
 CHECK_WIN = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
 COMPUTER_PICK = ""
@@ -55,13 +55,20 @@ def computer_turn():
     else:
         insert_in_list(comp[0], comp[1])
         GAME_PLAYED.append(comp[0])
+        COMPUTER_PLAY.append(comp[0])
 
+def filled_lis(player_lis, computer_lis):
+    if len(player_lis) == 3:
+        check_win(player_lis)
+    if len(computer_lis) == 3:
+        check_win(computer_lis)
 
 # Function for player to play 
 def player_turn():
     player = player_play(PLAYER_PICK)
     insert_in_list(player[0], player[1])
     GAME_PLAYED.append(player[0])
+    USER_PLAY.append(player[0])
     
     
 # Function to insert choosen x or o play into the display board
@@ -90,6 +97,8 @@ def check_win(game_lis):
             count += 1
             index = 0
         index += 1
+    game_lis.clear()
+    
 
 def replace(arr, index, char):
     for n in range(len(arr)):
@@ -105,6 +114,7 @@ if __name__=="__main__":
     check_X_Or_O() #Player chooses either X or O
     while True:
         menu()
+        filled_lis(USER_PLAY, COMPUTER_PLAY)
         print(GAME_PLAYED)
         
         
