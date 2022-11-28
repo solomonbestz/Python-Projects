@@ -50,13 +50,12 @@ def computer_turn():
         GAME_PLAYED.append(comp[0])
         COMPUTER_PLAY.append(comp[0])
 
+# Function to check if a list is filled
 def filled_lis(player_lis, computer_lis):
     if len(player_lis) == 3:
-        print(USER_PLAY)
-        check_win(player_lis)
+        check_win(player_lis, "player")
     if len(computer_lis) == 3:
-        check_win(computer_lis)
-        print(COMPUTER_PLAY)
+        check_win(computer_lis, "computer")
 
 # Function for player to play 
 def player_turn():
@@ -80,7 +79,7 @@ def menu():
     display_doard()
     filled_lis(USER_PLAY, COMPUTER_PLAY)
 
-def check_win(game_lis):
+def check_win(game_lis, name):
     true_win = []
     count = 0
     index = 0
@@ -88,16 +87,26 @@ def check_win(game_lis):
         if game_lis[index] in CHECK_WIN[count]:
             true_win.append(True)
             if index == 2:
-                print(f"You won {true_win}")
                 break
         else:
             true_win.clear()
             count += 1
             index = 0
         index += 1
+    if len(true_win) == 3:
+        if name == "player":
+            end_game(name)
+            exit()
+        elif name == "computer":
+            end_game(name)
+            exit()
     game_lis.clear()
     
-
+def end_game(name):
+    if name == "player":
+        print("Player Won")
+    if name == "computer":
+        print("computer Won")
 def replace(arr, index, char):
     for n in range(len(arr)):
         if n == index:
