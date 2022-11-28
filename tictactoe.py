@@ -22,7 +22,7 @@ def computer_play(xorochoose):
 
 
 def player_play(xorochoose):
-    return [int(input("Enter Position: ")), xorochoose]
+    return [int(input("Enter Position: ")) - 1, xorochoose]
 
 # Function for user to choose either x or o
 def check_X_Or_O():
@@ -41,11 +41,9 @@ def check_X_Or_O():
 def computer_turn():
     global GAME_PLAYED, COMPUTER_PICK
     comp = computer_play(COMPUTER_PICK)
-    print(comp[0])
-    print(GAME_PLAYED)
+
 
     if comp[0] in GAME_PLAYED:
-        print(f"came here with {comp[0]}")
         computer_turn()
     else:
         insert_in_list(comp[0], comp[1])
@@ -54,9 +52,11 @@ def computer_turn():
 
 def filled_lis(player_lis, computer_lis):
     if len(player_lis) == 3:
+        print(USER_PLAY)
         check_win(player_lis)
     if len(computer_lis) == 3:
         check_win(computer_lis)
+        print(COMPUTER_PLAY)
 
 # Function for player to play 
 def player_turn():
@@ -74,9 +74,11 @@ def insert_in_list(index, char):
 def menu():
     player_turn() #Computer chooses position to play
     display_doard()
+    filled_lis(USER_PLAY, COMPUTER_PLAY)
     time.sleep(3) # Game waits for 3seconds to continue
     computer_turn() #Computer chooses position to play randomly
     display_doard()
+    filled_lis(USER_PLAY, COMPUTER_PLAY)
 
 def check_win(game_lis):
     true_win = []
@@ -86,6 +88,7 @@ def check_win(game_lis):
         if game_lis[index] in CHECK_WIN[count]:
             true_win.append(True)
             if index == 2:
+                print(f"You won {true_win}")
                 break
         else:
             true_win.clear()
@@ -103,13 +106,11 @@ def replace(arr, index, char):
 
 if __name__=="__main__":
     # os.system("color 1f")
-    check_win()
     display_doard()
 
     check_X_Or_O() #Player chooses either X or O
     while True:
         menu()
-        filled_lis(USER_PLAY, COMPUTER_PLAY)
         print(GAME_PLAYED)
         
         
