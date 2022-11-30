@@ -10,4 +10,4 @@ def reverse_str(string):
     return rev_string
 
 if __name__=='__main__':
-    print(reverse_str("solomon"))
+    print(reverse_str("david"))
