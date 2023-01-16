@@ -107,6 +107,7 @@ def end_game(name):
         print("Player Won")
     if name == "computer":
         print("computer Won")
+        
 def replace(arr, index, char):
     for n in range(len(arr)):
         if n == index:
