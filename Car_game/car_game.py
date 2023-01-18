@@ -65,7 +65,7 @@ def level_up(counter):
     return counter
 
 def sounds():
-    car_sound1 = pygame.mixer.Sound("py_game/car_sound.mp3")
+    car_sound1 = pygame.mixer.Sound("Car_game/car_sound.mp3")
     return [car_sound1]
 
 
@@ -84,8 +84,8 @@ screen.fill((90, 90, 90)) #Game background color
 
 
 
-player = load_image("py_game/player_car.png", (150, 150), (LEFT_LANE, height * 0.88))
-enemy = load_image("py_game/enemy_car.png", (100, 130), (RIGHT_LANE - 1, height * 0.1))
+player = load_image("Car_game/player_car.png", (150, 150), (LEFT_LANE, height * 0.88))
+enemy = load_image("Car_game/enemy_car.png", (100, 130), (RIGHT_LANE - 1, height * 0.1))
 
 
 counter = 0
