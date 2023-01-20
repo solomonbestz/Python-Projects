@@ -11,18 +11,27 @@ screen_width = 800
 screen_height = 600
 screen = space.display.set_mode((screen_width, screen_height))
 
+"""
+Here we declared global variables of objects coordinate 
+"""
 # Player coordinate assigned to player_x and player_y variable
 player_x, player_y = 370, 480
 
 # Enemy coordinate assigned to enemy_x and enemy_y variable
 enemy_x, enemy_y = random.randint(1, 735), random.randint(1, 50)
 
+"""
+Here we declared global variables to change object's position
+"""
 # Change position of player's x and y coordinate
 change_player_x, change_player_y = 0, 0
 
 # Change position of enemy's x and y coordinate
 change_enemy_x, change_enemy_y = 0.3, 0
 
+"""
+Here we are creating all the functions needed to run the game
+"""
 # Function to load image
 def load_image(image_path):
     return space.image.load(image_path)
@@ -64,7 +73,6 @@ def enemy_mov_x():
     global enemy_x
     enemy_x += change_enemy_x
     
-
 # Check enemy boundary
 def check_enemy_boundary():
     global change_enemy_x, change_enemy_y, enemy_y
@@ -87,18 +95,27 @@ def check_boundary():
     if player_x > 735:
         player_x = 735
     
-     
-# Game title and logo
+
+"""
+Here we are loading all images to their respective variables
+""" 
+# Game title
 space.display.set_caption("Space Invader")
+# Load Game Icon and assign to the icon variable
 icon = load_image('Space_invader/spaceship_32.png')
 space.display.set_icon(icon)
-
-# Load Player Image and assign to the player_img object
+# Load Background Image and assign to the backgroud variable
+background = load_image('Space_invader/Background.jpg')
+# Load Player Image and assign to the player_img variable
 player_img = load_image('Space_invader/player.png')
-
-# Load Enemy Image and assign to the space_invader_img object
+# Load Enemy Image and assign to the space_invader_img variable
 space_invader_img = load_image('Space_invader/space-invader.png')
+# Load Bullet Image and assign to the player_bullet variable
 
+
+"""
+Here is the game loop
+"""
 # Game Loop
 running = True
 while running:
@@ -110,6 +127,9 @@ while running:
 
     # RGB color to change screen background color 
     screen.fill((12.16, 25.88, 46.67)) #(12, 25, 46)
+
+    # Add background image
+    screen.blit(background, (0, 0))
 
     # Event loop handler
     for event in space.event.get():
