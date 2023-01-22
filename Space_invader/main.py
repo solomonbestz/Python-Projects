@@ -36,15 +36,19 @@ Here we are creating all the functions needed to run the game
 def load_image(image_path):
     return space.image.load(image_path)
 
-# Player Screen Function
+# Player Appear On Screen Function
 def player(x, y):
-    # Screen blit to display player in screen
+    # Screen blit to display player on screen
     screen.blit(player_img, (x, y))
 
-# Enemy Screen Function
+# Enemy Appear On Screen Function
 def enemy(x, y):
-    # Screen blit to display enemy in screen
+    # Screen blit to display enemy on screen
     screen.blit(space_invader_img, (x, y))
+# Bullet Appear On Screen Function
+def bullet(x, y):
+    # Screen blit to display bullet on screen
+    screen.blit(bullet_img, (x, y))
 
 # Player Movement function for pressed event
 def player_mov_pressed(event): 
@@ -86,7 +90,6 @@ def check_enemy_boundary():
         enemy_y += change_enemy_y
         change_enemy_x = 0.3
     
-
 # Check player boundary
 def check_boundary():
     global player_x
@@ -111,6 +114,7 @@ player_img = load_image('Space_invader/player.png')
 # Load Enemy Image and assign to the space_invader_img variable
 space_invader_img = load_image('Space_invader/space-invader.png')
 # Load Bullet Image and assign to the player_bullet variable
+bullet_img = load_image('Space_invader/bullet.png')
 
 
 """
@@ -149,6 +153,8 @@ while running:
     player(player_x, player_y)
     # Display Enemy on screen
     enemy(enemy_x, enemy_y)
+    # Display Bullet on screen
+    bullet(230, 430)
 
     space.display.update()
 
