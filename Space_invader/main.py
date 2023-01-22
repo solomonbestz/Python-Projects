@@ -20,8 +20,11 @@ player_x, player_y = 370, 480
 # Enemy coordinate assigned to enemy_x and enemy_y variable
 enemy_x, enemy_y = random.randint(1, 735), random.randint(1, 50)
 
-# Bullet coordinate assign to bullet_x and bullet_y variable
+# Bullet coordinate assigned to bullet_x and bullet_y variable
 bullet_x, bullet_y = 0, 480
+
+# Muzzle flash coordinate assigned to muzzle_x and muzzle_y variable
+muzzle_x, muzzle_y = 0, 480
 
 """
 Bullet state
@@ -42,8 +45,10 @@ change_player_x, change_player_y = 0, 0
 change_enemy_x, change_enemy_y = 0.3, 0
 
 # Change position of bullet's x and y coordinate
-change_bullet_x, change_bullet_y = 0, 10
+change_bullet_x, change_bullet_y = 0, 1
 
+# Change position of muzzle's x and y coordinate
+change_muzzle_x, change_muzzle_y = 0, 1
 
 """
 Here we are creating all the functions needed to run the game
@@ -51,6 +56,7 @@ Here we are creating all the functions needed to run the game
 # Function to load image
 def load_image(image_path):
     return space.image.load(image_path)
+
 
 # Player Appear On Screen Function
 def player(x, y):
@@ -117,18 +123,44 @@ def check_boundary():
         player_x = 735
 
 
-# Fire Player bullet
-def fire_bullet(x, y):
+# Display Player bullet
+def bullet(x, y):
     global bullet_state
     bullet_state = "fire"
-    screen.blit(bullet_img, (x + 16, y + 10))
+    screen.blit(bullet_img, (x + 16, y - 10))
 
- 
+
+# Show muzzle flash
+def muzzle_flash(x, y):
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(muzzle_flash_img, (x + 15, y - 37))
+
+
 # Display Bullet when space button pressed
-def display_button(event):
+def display_bullet(event):
+    global bullet_state, bullet_x
     if event.type == KEYDOWN:
         if event.key in [K_SPACE]:
-            fire_bullet(player_x, bullet_y)
+            if bullet_state == "ready":
+                bullet_x = player_x
+                muzzle_flash(bullet_x, player_y)
+                bullet(bullet_x, bullet_y)
+
+
+# Fire Bullet
+def fire_bullet():
+    global bullet_state, bullet_y, muzzle_y
+    if bullet_state is "fire":
+        muzzle_flash(bullet_x, player_y)
+        bullet(bullet_x, bullet_y)
+        bullet_y -= change_bullet_y
+    if bullet_y < 1:
+        bullet_state = "ready"
+        bullet_y = 480
+        
+
+
 """
 Here we are loading all images to their respective variables
 """
@@ -143,8 +175,10 @@ background = load_image("Space_invader/Background.jpg")
 player_img = load_image("Space_invader/player.png")
 # Load Enemy Image and assign to the space_invader_img variable
 space_invader_img = load_image("Space_invader/space-invader.png")
-# Load Bullet Image and assign to the player_bullet variable
+# Load Bullet Image and assign to the bullet_img variable
 bullet_img = load_image("Space_invader/bullet.png")
+# Load Muzzle Flash and assign to the muzzle_flash_img variable
+muzzle_flash_img = load_image("space_invader/muzzle.png")
 
 
 """
@@ -171,11 +205,13 @@ while running:
             running = False
         player_mov_pressed(event)
         player_mov_released(event)
-        display_button(event)
+        display_bullet(event)
 
     # Enemy Movement
     enemy_mov_x()
 
+    # Bullet Movement
+    fire_bullet()
     # Player movement
     player_x += change_player_x
     player_y += change_player_y
