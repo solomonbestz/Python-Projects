@@ -97,7 +97,7 @@ while running:
     count = level_up(counter)
     counter = count
     end_game(player[1], enemy[1])
-    # EVent Listener
+    # Event Listener
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False

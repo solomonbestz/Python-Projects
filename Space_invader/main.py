@@ -1,6 +1,6 @@
 import pygame as space
 from pygame.locals import *
-import random
+import random, math
 
 
 # Initialise the space
@@ -131,10 +131,10 @@ def bullet(x, y):
 
 
 # Show muzzle flash
-def muzzle_flash(x, y):
-    global bullet_state
-    bullet_state = "fire"
-    screen.blit(muzzle_flash_img, (x + 15, y - 37))
+# def muzzle_flash(x, y):
+#     global bullet_state
+#     bullet_state = "fire"
+#     screen.blit(muzzle_flash_img, (x + 15, y - 37))
 
 
 # Display Bullet when space button pressed
@@ -144,7 +144,6 @@ def display_bullet(event):
         if event.key in [K_SPACE]:
             if bullet_state == "ready":
                 bullet_x = player_x
-                muzzle_flash(bullet_x, player_y)
                 bullet(bullet_x, bullet_y)
 
 
@@ -152,13 +151,21 @@ def display_bullet(event):
 def fire_bullet():
     global bullet_state, bullet_y, muzzle_y
     if bullet_state is "fire":
-        muzzle_flash(bullet_x, player_y)
         bullet(bullet_x, bullet_y)
         bullet_y -= change_bullet_y
     if bullet_y < 1:
         bullet_state = "ready"
         bullet_y = 480
-        
+
+
+# Collision Detection
+def is_collision(enemy_x, enemy_y, bullet_x, bullet_y):
+    distance = math.sqrt((math.pow(enemy_x - bullet_x, 2) + math.pow(enemy_y - bullet_y, 2)))
+    if distance < 27:
+        return True
+    else:
+        return False
+
 
 
 """
@@ -178,7 +185,7 @@ space_invader_img = load_image("Space_invader/space-invader.png")
 # Load Bullet Image and assign to the bullet_img variable
 bullet_img = load_image("Space_invader/bullet.png")
 # Load Muzzle Flash and assign to the muzzle_flash_img variable
-muzzle_flash_img = load_image("space_invader/muzzle.png")
+# muzzle_flash_img = load_image("space_invader/muzzle.png")
 
 
 """
@@ -221,4 +228,12 @@ while running:
     # Display Enemy on screen
     enemy(enemy_x, enemy_y)
 
+    # Calling the collision function
+    is_collide = is_collision(enemy_x, enemy_y, bullet_x, bullet_y)
+
+    if is_collide:
+        print("Touched")
+    else:
+        print("Not Touched")
+ 
     space.display.update()
