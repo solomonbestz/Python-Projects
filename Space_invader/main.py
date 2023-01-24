@@ -26,6 +26,9 @@ bullet_x, bullet_y = 0, 480
 # Muzzle flash coordinate assigned to muzzle_x and muzzle_y variable
 muzzle_x, muzzle_y = 0, 480
 
+# Global Score Variable
+score = 0
+
 """
 Bullet state
 
@@ -42,7 +45,7 @@ Here we declared global variables to change object's position
 change_player_x, change_player_y = 0, 0
 
 # Change position of enemy's x and y coordinate
-change_enemy_x, change_enemy_y = 0.3, 0
+change_enemy_x, change_enemy_y = 0.5, 0
 
 # Change position of bullet's x and y coordinate
 change_bullet_x, change_bullet_y = 0, 1
@@ -75,23 +78,21 @@ def player_mov_pressed(event):
     global change_player_x, change_player_y
     if event.type == KEYDOWN:
         if event.key in [K_d, K_RIGHT]:
-            change_player_x = 0.3
+            change_player_x = 0.5
         if event.key in [K_a, K_LEFT]:
-            change_player_x = -0.3
+            change_player_x = -0.5
         if event.key in [K_w, K_UP]:
-            change_player_y = -0.3
+            change_player_y = -0.5
         if event.key in [K_s, K_DOWN]:
-            change_player_y = 0.3
+            change_player_y = 0.5
 
 
 # Stops player's movement
 def player_mov_released(event):
     global change_player_x, change_player_y
     if event.type == KEYUP:
-        if event.key in [K_d, K_RIGHT] or event.key in [K_a, K_LEFT]:
-            change_player_x = 0
-        if event.key in [K_d, K_UP] or event.key in [K_a, K_DOWN]:
-            change_player_y = 0
+        if event.key in [K_d, K_RIGHT] or event.key in [K_a, K_LEFT]:change_player_x = 0
+        if event.key in [K_d, K_UP] or event.key in [K_a, K_DOWN]:change_player_y = 0
 
 
 # Function to move enemy on x coordinate
@@ -105,7 +106,7 @@ def check_enemy_boundary():
     global change_enemy_x, change_enemy_y, enemy_y
     if enemy_x > 735:
         change_enemy_y += 20
-        enemy_y += change_enemy_y
+        enemy_y += change_enemy_y   
         change_enemy_x = -0.3
 
     if enemy_x < 1:
@@ -130,26 +131,20 @@ def bullet(x, y):
     screen.blit(bullet_img, (x + 16, y - 10))
 
 
-# Show muzzle flash
-# def muzzle_flash(x, y):
-#     global bullet_state
-#     bullet_state = "fire"
-#     screen.blit(muzzle_flash_img, (x + 15, y - 37))
-
-
 # Display Bullet when space button pressed
 def display_bullet(event):
-    global bullet_state, bullet_x
+    global bullet_state, bullet_x, bullet_y
     if event.type == KEYDOWN:
         if event.key in [K_SPACE]:
             if bullet_state == "ready":
                 bullet_x = player_x
+                bullet_y = player_y
                 bullet(bullet_x, bullet_y)
 
 
 # Fire Bullet
 def fire_bullet():
-    global bullet_state, bullet_y, muzzle_y
+    global bullet_state, bullet_y
     if bullet_state is "fire":
         bullet(bullet_x, bullet_y)
         bullet_y -= change_bullet_y
@@ -159,13 +154,28 @@ def fire_bullet():
 
 
 # Collision Detection
-def is_collision(enemy_x, enemy_y, bullet_x, bullet_y):
-    distance = math.sqrt((math.pow(enemy_x - bullet_x, 2) + math.pow(enemy_y - bullet_y, 2)))
-    if distance < 27:
-        return True
-    else:
-        return False
+def collision(point_b_x, point_b_y, point_a_x, point_a_y):
+    distance = math.sqrt(
+        (math.pow(point_b_x - point_a_x, 2) + math.pow(point_b_y - point_a_y, 2))
+    )
+    return True if distance < 27 else False
 
+
+def remove_enemy():
+    global enemy_x, enemy_y, change_enemy_y, bullet_x, bullet_y, bullet_state, score
+    # Calling the collision function
+    is_collide = collision(enemy_x, enemy_y, bullet_x, bullet_y)
+
+    if is_collide:
+        # Reset Enemy's position
+        enemy_x, enemy_y = random.randint(1, 735), random.randint(1, 50)
+        change_enemy_y = 0
+
+        # Reset Bullet  
+        bullet_state = "ready"
+        bullet_x, bullet_y = 0, 480
+        score += 1
+        print(f"Killed \n {score}")
 
 
 """
@@ -214,6 +224,9 @@ while running:
         player_mov_released(event)
         display_bullet(event)
 
+    # Calling the function to remove enemy
+    remove_enemy()
+
     # Enemy Movement
     enemy_mov_x()
 
@@ -228,12 +241,4 @@ while running:
     # Display Enemy on screen
     enemy(enemy_x, enemy_y)
 
-    # Calling the collision function
-    is_collide = is_collision(enemy_x, enemy_y, bullet_x, bullet_y)
-
-    if is_collide:
-        print("Touched")
-    else:
-        print("Not Touched")
- 
     space.display.update()
