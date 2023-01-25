@@ -78,14 +78,15 @@ def enemy(enemy_img, x, y):
 # Function to create multiple enemies
 def multiple_enemies():
     global num_of_enemy, enemy_img, enemy_x, enemy_y, change_enemy_y, change_enemy_x
-    start_x_range, stop_x_range  = 1, 735
-    start_y_range, stop_y_range = 1, 50
+    x_range = range(1, 735, 100)
+    y_range = range(1, 50, 10)
+
     num_of_enemy = 5
+    enemy_x = random.sample(x_range, num_of_enemy)
+    enemy_y = random.sample(y_range, num_of_enemy)
 
     for enem in range(num_of_enemy):
         enemy_img.append(load_image("Space_invader/space-invader.png"))
-        enemy_x.append(random.randint(start_x_range, stop_x_range))
-        enemy_y.append(random.randint(start_y_range, stop_y_range))
         change_enemy_x.append(0.7)
         change_enemy_y.append(0)
 
