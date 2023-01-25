@@ -24,7 +24,7 @@ bullet_x, bullet_y = 0, 480
 muzzle_x, muzzle_y = 0, 480
 
 # Global Score Variable
-score = 0
+score_value = 0
 
 """
 Bullet state
@@ -50,7 +50,7 @@ change_enemy_x, change_enemy_y = [], []
 change_player_x, change_player_y = 0, 0
 
 # Change position of bullet's x and y coordinate
-change_bullet_x, change_bullet_y = 0, 1
+change_bullet_x, change_bullet_y = 0, 3
 
 # Number of enemies
 num_of_enemy = 0
@@ -78,15 +78,20 @@ def enemy(enemy_img, x, y):
 # Function to create multiple enemies
 def multiple_enemies():
     global num_of_enemy, enemy_img, enemy_x, enemy_y, change_enemy_y, change_enemy_x
-
-    num_of_enemy = 3
+    start_x_range, stop_x_range  = 1, 735
+    start_y_range, stop_y_range = 1, 50
+    num_of_enemy = 5
 
     for enem in range(num_of_enemy):
         enemy_img.append(load_image("Space_invader/space-invader.png"))
-        enemy_x.append(random.randint(1, 735))
-        enemy_y.append(random.randint(1, 50))
-        change_enemy_x.append(0.5)
+        enemy_x.append(random.randint(start_x_range, stop_x_range))
+        enemy_y.append(random.randint(start_y_range, stop_y_range))
+        change_enemy_x.append(0.7)
         change_enemy_y.append(0)
+
+    print(enemy_x)
+
+
 
 
 # Player Movement function for pressed event
@@ -94,13 +99,13 @@ def player_mov_pressed(event):
     global change_player_x, change_player_y
     if event.type == KEYDOWN:
         if event.key in [K_d, K_RIGHT]:
-            change_player_x = 0.5
+            change_player_x = 1
         if event.key in [K_a, K_LEFT]:
-            change_player_x = -0.5
+            change_player_x = -1
         if event.key in [K_w, K_UP]:
-            change_player_y = -0.5
+            change_player_y = -1
         if event.key in [K_s, K_DOWN]:
-            change_player_y = 0.5
+            change_player_y = 1
 
 
 # Stops player's movement
@@ -129,12 +134,12 @@ def check_enemy_boundary():
         if enemy_x[i] > 735:
             change_enemy_y[i] += 20
             enemy_y[i] += change_enemy_y[i]
-            change_enemy_x[i] = -0.3
+            change_enemy_x[i] = -0.7
 
         if enemy_x[i] < 1:
             change_enemy_y[i] += 20
             enemy_y[i] += change_enemy_y[i]
-            change_enemy_x[i] = 0.3
+            change_enemy_x[i] = 0.7
 
 
 # Check player boundary
@@ -182,9 +187,10 @@ def collision(point_b_x, point_b_y, point_a_x, point_a_y):
     )
     return True if distance < 27 else False
 
+
 # Enemy Removal function after collision with bullet
 def remove_enemy():
-    global enemy_x, enemy_y, change_enemy_y, bullet_x, bullet_y, bullet_state, score
+    global enemy_x, enemy_y, change_enemy_y, bullet_x, bullet_y, bullet_state, score_value
 
     for i in range(num_of_enemy):
 
@@ -200,9 +206,15 @@ def remove_enemy():
             # Reset Bullet
             bullet_state = "ready"
             bullet_x, bullet_y = 0, 480
-            score += 1
-            print(f"Killed \n {score}")
+            score_value += 1
+            print(f"Killed \n {score_value}")
 
+
+def display_score():
+    text_x, text_y = 10, 10
+    font = space.font.Font("freesansbold.ttf", 32)
+    score = font.render(f"Score: {score_value}", True, (255, 255, 255))
+    screen.blit(score, (text_x, text_y))
 
 """
 Here we are loading all images to their respective variables
@@ -237,8 +249,11 @@ while running:
     # Check if enemy has reached edge and push down
     check_enemy_boundary()
 
+    # Call the display score function
+    display_score()
+
     # RGB color to change screen background color
-    screen.fill((12.16, 25.88, 46.67))  # (12, 25, 46)
+    # screen.fill((12.16, 25.88, 46.67))  # (12, 25, 46)
 
     # Add background image
     screen.blit(background, (0, 0))
