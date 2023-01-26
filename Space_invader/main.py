@@ -87,12 +87,8 @@ def multiple_enemies():
 
     for enem in range(num_of_enemy):
         enemy_img.append(load_image("Space_invader/space-invader.png"))
-        change_enemy_x.append(0.5)
+        change_enemy_x.append(0.7)
         change_enemy_y.append(0)
-
-   
-
-
 
 
 # Player Movement function for pressed event
@@ -135,12 +131,12 @@ def check_enemy_boundary():
         if enemy_x[i] > 735:
             change_enemy_y[i] += 20
             enemy_y[i] += change_enemy_y[i]
-            change_enemy_x[i] = -0.5
+            change_enemy_x[i] = -0.7
 
         if enemy_x[i] < 1:
             change_enemy_y[i] += 20
             enemy_y[i] += change_enemy_y[i]
-            change_enemy_x[i] = 0.5
+            change_enemy_x[i] = 0.7
 
 
 # Check player boundary
@@ -211,11 +207,18 @@ def remove_enemy():
             print(f"Killed \n {score_value}")
 
 
+# Display kill score
 def display_score():
     text_x, text_y = 10, 10
-    font = space.font.Font("freesansbold.ttf", 32)
+    font = space.font.Font("Space_invader/prohuman.ttf", 32)
     score = font.render(f"Score: {score_value}", True, (255, 255, 255))
     screen.blit(score, (text_x, text_y))
+
+
+# Sounds function
+def sounds(path, volume):
+    return space.mixer.Sound(path).play().set_volume(volume)
+
 
 """
 Here we are loading all images to their respective variables
@@ -234,13 +237,14 @@ bullet_img = load_image("Space_invader/bullet.png")
 # Load Muzzle Flash and assign to the muzzle_flash_img variable
 # muzzle_flash_img = load_image("space_invader/muzzle.png")
 
-
+background_music = sounds("Space_invader/background.mp3", 0.1)
 # Calling the multiple enemy function
 multiple_enemies()
 
 """
 Here is the game loop
 """
+
 # Game Loop
 running = True
 while running:
@@ -281,4 +285,5 @@ while running:
     for enem in range(num_of_enemy):
         enemy(enemy_img[enem], enemy_x[enem], enemy_y[enem])
 
+    background_music
     space.display.update()
