@@ -90,7 +90,7 @@ def multiple_enemies():
         change_enemy_x.append(0.5)
         change_enemy_y.append(0)
 
-    print(enemy_x)
+   
 
 
 
