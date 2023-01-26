@@ -183,7 +183,7 @@ def collision(point_b_x, point_b_y, point_a_x, point_a_y):
     distance = math.sqrt(
         (math.pow(point_b_x - point_a_x, 2) + math.pow(point_b_y - point_a_y, 2))
     )
-    return True if distance < 27 else False
+    return distance
 
 
 # Enemy Removal function after collision with bullet
@@ -195,9 +195,9 @@ def remove_enemy():
         # Calling the collision function
         is_collide = collision(enemy_x[i], enemy_y[i], bullet_x, bullet_y)
 
-        if is_collide:
+        if is_collide < 27:
             # Reset Enemy's position
-
+            enemy_explosion_sound() # Function call for enemy to explode
             enemy_x[i], enemy_y[i] = random.randint(1, 735), random.randint(1, 50)
             change_enemy_y[i] = 0
 
@@ -205,7 +205,19 @@ def remove_enemy():
             bullet_state = "ready"
             bullet_x, bullet_y = 0, 480
             score_value += 1
-            print(f"Killed \n {score_value}")
+            # print(f"Killed \n {score_value}")
+    
+def game_over():
+    global running, enemy_x, enemy_y, change_enemy_y, player_x, player_y, score_value
+
+    for i in range(num_of_enemy):
+        # Checking enemy and player collision
+
+        player_collision = collision(player_x, player_y, enemy_x[i], enemy_y[i])
+    
+        if player_collision < 45:
+            print("We collided")
+            running = False
 
 
 # Display kill score
@@ -231,6 +243,10 @@ def background_sound():
 # Sound Function to shoot laser
 def shoot_laser():
     sounds("Space_invader/laser-gun.mp3", volume=0.5, loop=0)
+
+# Sound Function for enemy explosion
+def enemy_explosion_sound():
+    sounds("Space_invader/enemy-explosion.wav", volume=1, loop=0)
 
 
 """
@@ -287,6 +303,9 @@ while running:
     check_boundary()
     # Calling the function to remove enemy
     remove_enemy()
+
+    # Calling the function to check game over
+    game_over()
     # Bullet Movement
     fire_bullet()
     # Player movement
