@@ -164,6 +164,7 @@ def display_bullet(event):
                 bullet_x = player_x
                 bullet_y = player_y
                 bullet(bullet_x, bullet_y)
+                shoot_laser()
 
 
 # Fire Bullet
@@ -216,8 +217,20 @@ def display_score():
 
 
 # Sounds function
-def sounds(path, volume):
-    return space.mixer.Sound(path).play().set_volume(volume)
+def sounds(path, **optional):
+    sound_user = space.mixer.Sound(path)
+    sound_user.set_volume(optional.get("volume"))
+    sound_user.play(optional.get("loop"))
+
+
+# Sound Function for background music
+def background_sound():
+    sounds("Space_invader/background-music.wav", volume=0.3, loop=-1)
+
+
+# Sound Function to shoot laser
+def shoot_laser():
+    sounds("Space_invader/laser-gun.mp3", volume=0.5, loop=0)
 
 
 """
@@ -234,12 +247,13 @@ background = load_image("Space_invader/Background.jpg")
 player_img = load_image("Space_invader/player.png")
 # Load Bullet Image and assign to the bullet_img variable
 bullet_img = load_image("Space_invader/bullet.png")
-# Load Muzzle Flash and assign to the muzzle_flash_img variable
-# muzzle_flash_img = load_image("space_invader/muzzle.png")
 
-background_music = sounds("Space_invader/background.mp3", 0.1)
+
 # Calling the multiple enemy function
 multiple_enemies()
+
+# Calling background music
+background_sound()
 
 """
 Here is the game loop
@@ -250,12 +264,12 @@ running = True
 while running:
     # RGB color to change screen background color
     # screen.fill((12.16, 25.88, 46.67))  # (12, 25, 46)
-
     # Add background image
     screen.blit(background, (0, 0))
 
     # Call the display score function
     display_score()
+
     # Enemy Movement
     enemy_mov_x()
 
@@ -285,5 +299,4 @@ while running:
     for enem in range(num_of_enemy):
         enemy(enemy_img[enem], enemy_x[enem], enemy_y[enem])
 
-    background_music
     space.display.update()
