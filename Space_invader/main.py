@@ -87,7 +87,7 @@ def multiple_enemies():
 
     for enem in range(num_of_enemy):
         enemy_img.append(load_image("Space_invader/space-invader.png"))
-        change_enemy_x.append(0.7)
+        change_enemy_x.append(0.5)
         change_enemy_y.append(0)
 
     print(enemy_x)
@@ -135,12 +135,12 @@ def check_enemy_boundary():
         if enemy_x[i] > 735:
             change_enemy_y[i] += 20
             enemy_y[i] += change_enemy_y[i]
-            change_enemy_x[i] = -0.7
+            change_enemy_x[i] = -0.5
 
         if enemy_x[i] < 1:
             change_enemy_y[i] += 20
             enemy_y[i] += change_enemy_y[i]
-            change_enemy_x[i] = 0.7
+            change_enemy_x[i] = 0.5
 
 
 # Check player boundary
@@ -244,20 +244,16 @@ Here is the game loop
 # Game Loop
 running = True
 while running:
-    # Check if player has reached edge
-    check_boundary()
-
-    # Check if enemy has reached edge and push down
-    check_enemy_boundary()
-
-    # Call the display score function
-    display_score()
-
     # RGB color to change screen background color
     # screen.fill((12.16, 25.88, 46.67))  # (12, 25, 46)
 
     # Add background image
     screen.blit(background, (0, 0))
+
+    # Call the display score function
+    display_score()
+    # Enemy Movement
+    enemy_mov_x()
 
     # Event loop handler
     for event in space.event.get():
@@ -267,12 +263,12 @@ while running:
         player_mov_released(event)
         display_bullet(event)
 
+    # Check if enemy has reached edge and push down
+    check_enemy_boundary()
+    # Check if player has reached edge
+    check_boundary()
     # Calling the function to remove enemy
     remove_enemy()
-
-    # Enemy Movement
-    enemy_mov_x()
-
     # Bullet Movement
     fire_bullet()
     # Player movement
