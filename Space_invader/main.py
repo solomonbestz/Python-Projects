@@ -131,12 +131,12 @@ def check_enemy_boundary():
         if enemy_x[i] > 735:
             change_enemy_y[i] += 20
             enemy_y[i] += change_enemy_y[i]
-            change_enemy_x[i] = -0.7
+            change_enemy_x[i] = -0.9
 
         if enemy_x[i] < 1:
             change_enemy_y[i] += 20
             enemy_y[i] += change_enemy_y[i]
-            change_enemy_x[i] = 0.7
+            change_enemy_x[i] = 0.9
 
 
 # Check player boundary
